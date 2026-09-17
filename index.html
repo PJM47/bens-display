@@ -5,52 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Enterprise Multi-Line Color Factory Display</title>
     <style>
-        /* FIXED: Switched to dynamic viewport height (dvh) so mobile browser bars never push content off-screen */
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #0c0d10; color: #fff; display: flex; justify-content: center; align-items: center; height: 100dvh; overflow: hidden; }
         
         /* MONITOR DISPLAY STYLING */
-        #display-view { display: flex; flex-direction: column; width: 100%; height: 100dvh; box-sizing: border-box; padding: 40px; position: relative; }
+        #display-view { display: flex; flex-direction: column; width: 100%; height: 100dvh; box-sizing: border-box; padding: 50px; position: relative; }
         #display-title { font-size: 4.5vw; font-weight: 900; color: #ffffff; border-bottom: 5px solid #FFCC00; padding-bottom: 15px; margin-bottom: 20px; letter-spacing: 2px; flex: 0 0 auto; min-height: 1.2em; }
-        #display-lines { display: flex; flex-direction: column; justify-content: space-evenly; flex: 1; min-height: 0; padding-bottom: 50px; }
+        #display-lines { display: flex; flex-direction: column; justify-content: space-evenly; flex: 1; min-height: 0; padding-bottom: 30px; }
         .message-line { font-weight: bold; line-height: 1.2; white-space: nowrap; position: relative; padding-left: 0px; }
 
-        /* FIXED: Raised button to bottom: 30px and gave it a touch-friendly tap target box */
-        #hidden-admin-trigger { 
-            position: absolute; 
-            bottom: 30px; 
-            right: 25px; 
-            width: 44px; 
-            height: 44px; 
-            background: transparent; 
-            border: none; 
-            cursor: pointer; 
-            color: #23262f; 
-            font-size: 22px; 
-            opacity: 0.3; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center;
-            z-index: 9999;
-            -webkit-tap-highlight-color: transparent;
-        }
+        /* THE DISCRETE CORNER BUTTON */
+        #hidden-admin-trigger { position: absolute; bottom: 15px; right: 15px; width: 24px; height: 24px; background: transparent; border: none; cursor: pointer; color: #23262f; font-size: 16px; opacity: 0.4; display: flex; align-items: center; justify-content: center; }
         #hidden-admin-trigger:hover { opacity: 1; color: #fff; }
 
         /* ADMINISTRATIVE MOBILE UI STYLING */
-        #admin-view { display: none; flex-direction: column; width: 95%; max-width: 800px; height: 90dvh; background: #1a1c23; padding: 25px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); box-sizing: border-box; }
+        #admin-view { display: none; flex-direction: column; width: 95%; max-width: 800px; height: 85vh; background: #1a1c23; padding: 25px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); box-sizing: border-box; }
         .scroll-area { flex-grow: 1; overflow-y: auto; margin-bottom: 10px; padding-right: 15px; }
         label { display: block; font-size: 13px; text-transform: uppercase; color: #9ca3af; font-weight: bold; margin-bottom: 6px; }
         input[type="text"], input[type="password"], select { width: 100%; padding: 12px; margin-bottom: 15px; box-sizing: border-box; background: #2d3139; color: #fff; border: 1px solid #434955; border-radius: 6px; font-size: 16px; }
         
-        .input-row { display: flex; gap: 10px; margin-bottom: 10px; align-items: center; margin-right: 5px; width: 100%; box-sizing: border-box; }
+        /* THE FLEXIBLE FLUID ROW FRAMEWORK */
+        .input-row { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; width: 100%; box-sizing: border-box; }
+        
+        /* FIXED: Text inputs now expand to claim maximum width */
         .input-row input[type="text"] { margin-bottom: 0; flex: 1; min-width: 0; }
-        .input-row select { margin-bottom: 0; flex: 0 0 120px; width: 120px; background: #3a3f4d; color: white; border: 1px solid #434955; }
-        .remove-btn { background: #ef4444; border: none; color: white; border-radius: 6px; padding: 12px 15px; cursor: pointer; flex: 0 0 auto; }
+        
+        /* FIXED: Squeezed color picker to clear maximum horizontal room */
+        .input-row select { margin-bottom: 0; flex: 0 0 120px; width: 120px; background: #3a3f4d; color: white; border: 1px solid #434955; text-align: center; }
+        .remove-btn { background: #ef4444; border: none; color: white; border-radius: 6px; padding: 12px 14px; cursor: pointer; flex: 0 0 auto; }
         
         .secondary-btn { background: #3b82f6; width: 100%; padding: 10px; border: none; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
         
         .fixed-security-drawer { flex: 0 0 auto; width: 100%; box-sizing: border-box; }
         .control-btn-group { display: flex; gap: 10px; width: 100%; box-sizing: border-box; margin-top: 5px; flex: 0 0 auto; }
-        .control-btn-group button { flex: 1; padding: 15px 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
+        .control-btn-group button { flex: 1; padding: 15px 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
         
         #send-btn { background: #10b981; color: white; }
         #toggle-password-change-btn { background: #4b5563; color: white; }
@@ -58,11 +45,21 @@
         button:hover { opacity: 0.9; }
 
         /* FIRST TIME SESSION ACCESS LOCK OVERLAY */
-        #session-lock-screen { position: absolute; top:0; left:0; width:100vw; height:100dvh; background:#0c0d10; display:none; flex-direction:column; justify-content:center; align-items:center; z-index:99999; }
+        #session-lock-screen { position: absolute; top:0; left:0; width:100vw; height:100vh; background:#0c0d10; display:none; flex-direction:column; justify-content:center; align-items:center; z-index:99999; }
         .lock-card { width:90%; max-width:400px; background:#1a1c23; padding:30px; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,0.6); text-align:center; box-sizing:border-box; }
         .lock-card input { width: 100%; padding: 12px; margin-bottom: 15px; box-sizing: border-box; background: #2d3139; color: #fff; border: 1px solid #434955; border-radius: 6px; font-size: 16px; }
         .lock-card .primary-btn { width: 100%; padding: 15px; background: #10b981; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px; margin-bottom: 10px; }
         .lock-card .cancel-btn { width: 100%; padding: 10px; background: #3a3f4d; color: #d1d5db; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px; }
+
+        /* 📱 FIXED: SMARTPHONE ULTRA-WIDE HORIZONTAL TEXT VIEWPORT */
+        @media (max-width: 600px) {
+            .scroll-area { padding-right: 5px; }
+            .input-row { gap: 6px; }
+            
+            /* FIXED: Squeezes color selector box down to just 55px on an iPhone screen */
+            .input-row select { flex: 0 0 55px; width: 55px; padding: 12px 2px; padding-left: 8px; font-size: 18px; }
+            .input-row .remove-btn { padding: 12px 10px; }
+        }
     </style>
 </head>
 <body>
@@ -70,7 +67,6 @@
     <div id="display-view">
         <div id="display-title">&nbsp;</div>
         <div id="display-lines"></div>
-        <!-- Pinned slightly higher with a larger target zone -->
         <button id="hidden-admin-trigger">⚙️</button>
     </div>
 
@@ -86,7 +82,7 @@
 
     <div id="admin-view">
         <h3 style="margin-top:0; color:#f3f4f6;">Screen Settings Dashboard</h3>
-        <div id="network-status-log" style="font-size: 11px; font-family: monospace; color: #9ca3af; margin-bottom: 15px;">Connection Status: Ready</div>
+        <div id="network-status-log" style="font-size: 11px; font-family: monospace; color: #9ca3af; margin-bottom: 15px;">Connection Status: Checking connection settings...</div>
         
         <div class="scroll-area">
             <label>Display Header/Title</label>
@@ -125,24 +121,32 @@
             }
         };
 
+        // FIXED: Rebuilt option text layout structure to support compressed mobile viewports
         window.clearAndAddRow = function(textValue, colorValue) {
             var linesContainer = document.getElementById('lines-container');
             var rowCount = linesContainer.children.length;
             if (rowCount >= 10) return;
+            
+            // Detection trick: Checks screen space width to dynamically adjust option wording text inside mobile layout formats
+            var isMobileWidth = window.innerWidth <= 600;
+            var labelYellow = isMobileWidth ? "⚠️" : "⚠️ Yellow";
+            var labelRed = isMobileWidth ? "🚨" : "🚨 Red";
+            var labelGreen = isMobileWidth ? "✅" : "✅ Green";
+            var labelWhite = isMobileWidth ? "⚪" : "⚪ White";
+
             var row = document.createElement('div');
             row.className = 'input-row';
             row.innerHTML = '<input type="text" class="line-text-item" value="' + textValue + '" placeholder="Line ' + (rowCount + 1) + '">' +
                             '<select class="line-color-item">' +
-                            '<option value="#FFCC00" ' + (colorValue === '#FFCC00' ? 'selected' : '') + '>⚠️ Yellow</option>' +
-                            '<option value="#ef4444" ' + (colorValue === '#ef4444' ? 'selected' : '') + '>🚨 Red</option>' +
-                            '<option value="#10b981" ' + (colorValue === '#10b981' ? 'selected' : '') + '>✅ Green</option>' +
-                            '<option value="#ffffff" ' + (colorValue === '#ffffff' ? 'selected' : '') + '>⚪ White</option>' +
+                            '<option value="#FFCC00" ' + (colorValue === '#FFCC00' ? 'selected' : '') + '>' + labelYellow + '</option>' +
+                            '<option value="#ef4444" ' + (colorValue === '#ef4444' ? 'selected' : '') + '>' + labelRed + '</option>' +
+                            '<option value="#10b981" ' + (colorValue === '#10b981' ? 'selected' : '') + '>' + labelGreen + '</option>' +
+                            '<option value="#ffffff" ' + (colorValue === '#ffffff' ? 'selected' : '') + '>' + labelWhite + '</option>' +
                             '</select><button type="button" class="remove-btn">❌</button>';
             row.querySelector('.remove-btn').addEventListener('click', function() { row.remove(); });
             linesContainer.appendChild(row);
         };
 
-        // FIXED: Clear instructions that explain exactly what went wrong if variables match template fallbacks
         window.renderEmergencyDashboardError = function() {
             var statusLog = document.getElementById('network-status-log');
             if (statusLog) {
@@ -197,6 +201,7 @@
             setTimeout(function() { if (globalFirebaseError !== "") window.renderEmergencyDashboardError(); }, 200);
         });
     </script>
+
 
     <!-- SCRIPT 2: Isolated module block. If this box crashes, Script 1 keeps running perfectly. -->
     <script type="module">
