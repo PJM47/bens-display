@@ -6,70 +6,47 @@
     <title>Enterprise Multi-Line Color Factory Display</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #0c0d10; color: #fff; display: flex; justify-content: center; align-items: center; height: 100dvh; overflow: hidden; }
-        
-        /* MONITOR DISPLAY STYLING */
         #display-view { display: flex; flex-direction: column; width: 100%; height: 100dvh; box-sizing: border-box; padding: 50px; position: relative; }
         #display-title { font-size: 4.5vw; font-weight: 900; color: #ffffff; border-bottom: 5px solid #FFCC00; padding-bottom: 15px; margin-bottom: 20px; letter-spacing: 2px; flex: 0 0 auto; min-height: 1.2em; }
         #display-lines { display: flex; flex-direction: column; justify-content: space-evenly; flex: 1; min-height: 0; padding-bottom: 30px; }
         .message-line { font-weight: bold; line-height: 1.2; white-space: nowrap; position: relative; padding-left: 0px; }
-
-        /* THE DISCRETE CORNER BUTTON */
         #hidden-admin-trigger { position: absolute; bottom: 15px; right: 15px; width: 24px; height: 24px; background: transparent; border: none; cursor: pointer; color: #23262f; font-size: 16px; opacity: 0.4; display: flex; align-items: center; justify-content: center; }
         #hidden-admin-trigger:hover { opacity: 1; color: #fff; }
-
-        /* ADMINISTRATIVE MOBILE UI STYLING */
         #admin-view { display: none; flex-direction: column; width: 95%; max-width: 800px; height: 85vh; background: #1a1c23; padding: 25px; border-radius: 12px; box-shadow: 0 8px 32px rgba(0,0,0,0.5); box-sizing: border-box; }
         .scroll-area { flex-grow: 1; overflow-y: auto; margin-bottom: 10px; padding-right: 15px; }
         label { display: block; font-size: 13px; text-transform: uppercase; color: #9ca3af; font-weight: bold; margin-bottom: 6px; }
         input[type="text"], input[type="password"], select { width: 100%; padding: 12px; margin-bottom: 15px; box-sizing: border-box; background: #2d3139; color: #fff; border: 1px solid #434955; border-radius: 6px; font-size: 16px; }
-        
-        /* THE FLEXIBLE FLUID ROW FRAMEWORK */
         .input-row { display: flex; gap: 8px; margin-bottom: 10px; align-items: center; width: 100%; box-sizing: border-box; }
-        
-        /* FIXED: Text inputs now expand to claim maximum width */
         .input-row input[type="text"] { margin-bottom: 0; flex: 1; min-width: 0; }
-        
-        /* FIXED: Squeezed color picker to clear maximum horizontal room */
         .input-row select { margin-bottom: 0; flex: 0 0 120px; width: 120px; background: #3a3f4d; color: white; border: 1px solid #434955; text-align: center; }
         .remove-btn { background: #ef4444; border: none; color: white; border-radius: 6px; padding: 12px 14px; cursor: pointer; flex: 0 0 auto; }
-        
         .secondary-btn { background: #3b82f6; width: 100%; padding: 10px; border: none; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; margin-bottom: 20px; }
-        
         .fixed-security-drawer { flex: 0 0 auto; width: 100%; box-sizing: border-box; }
         .control-btn-group { display: flex; gap: 10px; width: 100%; box-sizing: border-box; margin-top: 5px; flex: 0 0 auto; }
         .control-btn-group button { flex: 1; padding: 15px 10px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 15px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
-        
         #send-btn { background: #10b981; color: white; }
         #toggle-password-change-btn { background: #4b5563; color: white; }
         #back-to-screen-btn { background: #3a3f4d; color: #d1d5db; }
         button:hover { opacity: 0.9; }
-
-        /* FIRST TIME SESSION ACCESS LOCK OVERLAY */
         #session-lock-screen { position: absolute; top:0; left:0; width:100vw; height:100vh; background:#0c0d10; display:none; flex-direction:column; justify-content:center; align-items:center; z-index:99999; }
         .lock-card { width:90%; max-width:400px; background:#1a1c23; padding:30px; border-radius:12px; box-shadow:0 10px 40px rgba(0,0,0,0.6); text-align:center; box-sizing:border-box; }
         .lock-card input { width: 100%; padding: 12px; margin-bottom: 15px; box-sizing: border-box; background: #2d3139; color: #fff; border: 1px solid #434955; border-radius: 6px; font-size: 16px; }
         .lock-card .primary-btn { width: 100%; padding: 15px; background: #10b981; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 16px; margin-bottom: 10px; }
         .lock-card .cancel-btn { width: 100%; padding: 10px; background: #3a3f4d; color: #d1d5db; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; font-size: 14px; }
-
-        /* 📱 FIXED: SMARTPHONE ULTRA-WIDE HORIZONTAL TEXT VIEWPORT */
         @media (max-width: 600px) {
             .scroll-area { padding-right: 5px; }
             .input-row { gap: 6px; }
-            
-            /* FIXED: Squeezes color selector box down to just 55px on an iPhone screen */
             .input-row select { flex: 0 0 55px; width: 55px; padding: 12px 2px; padding-left: 8px; font-size: 18px; }
             .input-row .remove-btn { padding: 12px 10px; }
         }
     </style>
 </head>
 <body>
-
     <div id="display-view">
         <div id="display-title">&nbsp;</div>
         <div id="display-lines"></div>
         <button id="hidden-admin-trigger">⚙️</button>
     </div>
-
     <div id="session-lock-screen">
         <div class="lock-card">
             <h3 style="margin-top:0; color:#f3f4f6;">System Access Verification</h3>
@@ -79,11 +56,9 @@
             <button type="button" id="gate-cancel-btn" class="cancel-btn">Cancel & Exit</button>
         </div>
     </div>
-
     <div id="admin-view">
         <h3 style="margin-top:0; color:#f3f4f6;">Screen Settings Dashboard</h3>
         <div id="network-status-log" style="font-size: 11px; font-family: monospace; color: #9ca3af; margin-bottom: 15px;">Connection Status: Checking connection settings...</div>
-        
         <div class="scroll-area">
             <label>Display Header/Title</label>
             <input type="text" id="title-input" placeholder="e.g., Current Announcements">
@@ -91,25 +66,22 @@
             <div id="lines-container"></div>
             <button type="button" id="add-line-btn" class="secondary-btn">+ Add Content Line</button>
         </div>
-
         <div class="fixed-security-drawer">
             <div id="password-change-section" style="display:none; border-left: 3px solid #ef4444; padding-left: 12px; box-sizing: border-box; margin-bottom: 10px;">
                 <label style="color:#ef4444;">Type New Password Target String</label>
                 <input type="password" id="new-password-input" placeholder="Enter New Passcode" style="margin-bottom:0;">
             </div>
         </div>
-
         <div class="control-btn-group">
-            <button id="send-btn">Broadcast to Screen</button>
+            <button id="send-btn">Submit</button>
             <button type="button" id="toggle-password-change-btn">🔑 Change Password</button>
-            <button type="button" id="back-to-screen-btn">Cancel View</button>
+            <button type="button" id="back-to-screen-btn">Cancel</button>
         </div>
     </div>
     <script>
         var currentLongestCharCount = 0;
         var currentLinesCount = 0;
         var globalFirebaseError = "";
-        
         window.recalculateFontSizes = function() {
             var listContainer = document.getElementById('display-lines');
             if (currentLongestCharCount > 0 && currentLinesCount > 0) {
@@ -120,20 +92,15 @@
                 renderedLines.forEach(function(li) { li.style.fontSize = finalFontSize + "px"; });
             }
         };
-
-        // FIXED: Rebuilt option text layout structure to support compressed mobile viewports
         window.clearAndAddRow = function(textValue, colorValue) {
             var linesContainer = document.getElementById('lines-container');
             var rowCount = linesContainer.children.length;
             if (rowCount >= 10) return;
-            
-            // Detection trick: Checks screen space width to dynamically adjust option wording text inside mobile layout formats
             var isMobileWidth = window.innerWidth <= 600;
             var labelYellow = isMobileWidth ? "⚠️" : "⚠️ Yellow";
             var labelRed = isMobileWidth ? "🚨" : "🚨 Red";
             var labelGreen = isMobileWidth ? "✅" : "✅ Green";
             var labelWhite = isMobileWidth ? "⚪" : "⚪ White";
-
             var row = document.createElement('div');
             row.className = 'input-row';
             row.innerHTML = '<input type="text" class="line-text-item" value="' + textValue + '" placeholder="Line ' + (rowCount + 1) + '">' +
@@ -146,7 +113,6 @@
             row.querySelector('.remove-btn').addEventListener('click', function() { row.remove(); });
             linesContainer.appendChild(row);
         };
-
         window.renderEmergencyDashboardError = function() {
             var statusLog = document.getElementById('network-status-log');
             if (statusLog) {
@@ -160,14 +126,12 @@
             document.getElementById('admin-view').style.display = 'flex';
             document.getElementById('display-view').style.display = 'none';
         };
-
         window.addEventListener('DOMContentLoaded', function() {
             var adminView = document.getElementById('admin-view');
             var displayView = document.getElementById('display-view');
             var lockScreen = document.getElementById('session-lock-screen');
             var passToggle = document.getElementById('toggle-password-change-btn');
             var passSection = document.getElementById('password-change-section');
-
             document.getElementById('hidden-admin-trigger').addEventListener('click', function() {
                 if (globalFirebaseError !== "") {
                     window.renderEmergencyDashboardError();
@@ -178,11 +142,9 @@
                     lockScreen.style.display = 'flex';
                 }
             });
-
             document.getElementById('gate-cancel-btn').addEventListener('click', function() { lockScreen.style.display = 'none'; });
             document.getElementById('back-to-screen-btn').addEventListener('click', function() { adminView.style.display = 'none'; displayView.style.display = 'flex'; });
             passToggle.addEventListener('click', function() { passSection.style.display = passSection.style.display === 'none' ? 'block' : 'none'; });
-            
             document.getElementById('new-password-input').addEventListener('keydown', function(event) {
                 if (event.key === 'Enter') { event.preventDefault(); document.getElementById('send-btn').click(); }
             });
@@ -191,19 +153,15 @@
             });
             document.getElementById('add-line-btn').addEventListener('click', function() { window.clearAndAddRow("", "#FFCC00"); });
             window.addEventListener('resize', function() { if (displayView.style.display !== 'none') window.recalculateFontSizes(); });
-
             var rememberedPass = sessionStorage.getItem('signage_pass');
             if (rememberedPass) {
                 var pField = document.getElementById('password-input');
                 if(pField) pField.value = rememberedPass;
             }
-            
             setTimeout(function() { if (globalFirebaseError !== "") window.renderEmergencyDashboardError(); }, 200);
         });
     </script>
-
-
-    <!-- SCRIPT 2: Isolated module block. If this box crashes, Script 1 keeps running perfectly. -->
+    <!-- Isolated module block. If this box crashes, previous parts keep running perfectly. -->
     <script type="module">
 		import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
 		import { getFirestore, doc, getDoc, onSnapshot, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -216,43 +174,35 @@
 		  messagingSenderId: "351985916497",
 		  appId: "1:351985916497:web:752baa39c8de3c868b3670"
 		};
-        var docRef = null;
 
-        // ISOLATED INITIALISATION CAPSULE
+        var docRef = null;
         try {
             if (firebaseConfig.apiKey.includes("AIzaSyDTO_m_m_lRkEwF4oyshojWzCmIN4ISGx8") === false) {
-                // If the user forgot to swap the placeholder keys, throw a diagnostic trigger right away
                 throw new Error("Invalid or unconfigured target API token entries.");
             }
             const app = initializeApp(firebaseConfig);
             const db = getFirestore(app);
             docRef = doc(db, "signage", "config");
 
-            // Real-time Database Snapshot Pipeline
             onSnapshot(docRef, (docSnap) => {
                 if (docSnap.exists()) {
                     const data = docSnap.data();
                     document.getElementById('display-title').innerText = data.title || "";
-                    
                     const listContainer = document.getElementById('display-lines');
                     listContainer.innerHTML = ""; 
                     const lines = data.lines || [];
                     window.currentLinesCount = lines.length;
                     window.currentLongestCharCount = 0;
-                    
                     lines.forEach(lineObj => {
                         const txt = lineObj.text || "";
                         if (txt.length > window.currentLongestCharCount) window.currentLongestCharCount = txt.length;
-                        
                         const li = document.createElement('div');
                         li.className = 'message-line';
                         li.innerText = txt;
                         li.style.color = lineObj.color || "#FFCC00"; 
                         listContainer.appendChild(li);
                     });
-
                     window.recalculateFontSizes();
-
                     if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'SELECT') {
                         document.getElementById('title-input').value = data.title || "";
                         document.getElementById('lines-container').innerHTML = "";
@@ -265,14 +215,11 @@
                 var logBox = document.getElementById('network-status-log');
                 if(logBox) logBox.innerText = "Network Link Error: " + netErr.message;
             });
-
         } catch (scriptCrash) {
-            // Intercept structural errors and flag the global state pointer for Script 1
             window.globalFirebaseError = scriptCrash.message;
             if (window.renderEmergencyDashboardError) window.renderEmergencyDashboardError();
         }
 
-        // BACKEND CONTROL PANEL BROADCASTER HANDSHAKE
         document.getElementById('send-btn').addEventListener('click', async () => {
             if (window.globalFirebaseError !== "" || !docRef) {
                 alert("Cannot broadcast: Firebase engine is unconfigured.");
@@ -283,7 +230,6 @@
             const newPass = document.getElementById('new-password-input').value;
             const currentPass = sessionStorage.getItem('signage_pass');
             const linesContainer = document.getElementById('lines-container');
-
             const rows = linesContainer.querySelectorAll('.input-row');
             const linesArray = [];
             rows.forEach(row => {
@@ -291,10 +237,8 @@
                 const col = row.querySelector('.line-color-item').value;
                 if (txt.trim() !== "") linesArray.push({ text: txt, color: col });
             });
-
             const passwordToSave = (newPass.trim() !== "") ? newPass : currentPass;
             btn.innerText = "Broadcasting...";
-
             try {
                 await updateDoc(docRef, {
                     title: titleText,
@@ -302,36 +246,31 @@
                     secretPassword: passwordToSave,
                     verificationPassword: currentPass 
                 });
-                
                 sessionStorage.setItem('signage_pass', passwordToSave);
                 document.getElementById('new-password-input').value = "";
                 document.getElementById('password-change-section').style.display = 'none'; 
-                
                 btn.innerText = "Updated!";
                 setTimeout(() => {
-                    btn.innerText = "Broadcast to Screen";
+                    btn.innerText = "Update";
                     document.getElementById('admin-view').style.display = 'none';
                     document.getElementById('display-view').style.display = 'flex';
                 }, 1500);
             } catch (error) {
                 alert("Verification Failed: Session token expired or password changed from another device.");
                 sessionStorage.removeItem('signage_pass'); 
-                btn.innerText = "Broadcast to Screen";
+                btn.innerText = "Update";
                 document.getElementById('admin-view').style.display = 'none';
                 document.getElementById('display-view').style.display = 'flex';
             }
         });
 
-        // Gateway submit handler verification
         document.getElementById('gate-submit-btn').addEventListener('click', async () => {
             if (window.globalFirebaseError !== "" || !docRef) return;
             const enteredPass = document.getElementById('gate-password-input').value;
             const submitBtn = document.getElementById('gate-submit-btn');
             if (enteredPass.trim() === "") { alert("Please enter a password."); return; }
-
             submitBtn.innerText = "Verifying...";
             submitBtn.disabled = true;
-
             try {
                 await updateDoc(docRef, { verificationPassword: enteredPass });
                 sessionStorage.setItem('signage_pass', enteredPass);
